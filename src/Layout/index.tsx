@@ -1,8 +1,11 @@
 import React from "react";
+import Home from '../Pages/Home'
 
 const Layout = () => {
     return(
-        <>Layout</>
+        <>
+            <Home/>
+        </>
     )
 }
 
