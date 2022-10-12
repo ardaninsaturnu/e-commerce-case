@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from "react";
-import {Product,RootObject} from "../../utility/types";
 
 const Home = () => {
-    const [products, setProducts] = useState<RootObject>()
+    const [products, setProducts] = useState<any>(null)
 
     useEffect(() => {
         (
