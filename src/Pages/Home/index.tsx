@@ -1,37 +1,49 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
+import {useAppDispatch, useAppSelector} from "../../store";
+import {fetchAllProduct} from "../../store/slices/productSlice";
 
 const Home = () => {
-    const [products, setProducts] = useState<any>(null)
+    const dispatch = useAppDispatch();
+    const productState = useAppSelector(state => state.products);
+    const products = productState?.data?.products;
 
     useEffect(() => {
-        (
-            async () => {
-                let token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1laG1ldGFyZGEuY2VsaWtAaG90bWFpbC5jb20iLCJnaXRodWIiOiJodHRwczovL2dpdGh1Yi5jb20vYXJkYW5pbnNhdHVybnUiLCJpYXQiOjE2NjU1MDUxMDYsImV4cCI6MTY2NTkzNzEwNn0.zeXT9Qopzz1cKktarRrRWE4n_-UtXuI5Cdvr98Rl-Pg'
+        dispatch(fetchAllProduct())
+    }, []);
 
-                await fetch( 'https://upayments-studycase-api.herokuapp.com/api/products', {
-                    method: 'GET',
-                    mode: "cors",
-                    cache: "no-cache",
-                    headers: {"Authorization": `Bearer ${token}`}
-                })
-                    .then( response => response.json() )
-                    .then( data => setProducts( data ) )
-                    .catch( error => console.error( error ) )
-
-        })()
-
-        console.log(products)
-    },[]);
-
-    return(
+    return (
         <>
-            <h1 className="text-amber-400">All products</h1>
-            <div className="flex flex-row flex-wrap text-black">
-
+            <div className="w-full lg:columns-4 sm:columns-3 gap-0.5">
+                {
+                    products?.map(product => {
+                        return (
+                          <div className="w-[95%] my-4 max-w-sm rounded-lg shadow-md bg-purple-900 mx-auto break-inside-avoid">
+                            <div className="flex justify-center p-5">
+                                <img className="max-h-auto w-full" src={product.avatar} alt=""/>
+                            </div>
+                            <div className="px-5 pb-5">
+                              <a>
+                                <h5 className="text-lg font-semibold tracking-tight text-gray-300">
+                                    {product.name}
+                                </h5>
+                              </a>
+                              <div className="flex items-center mt-2.5 mb-5">
+                                <span className="bg-indigo-800 text-indigo-300 text-xs font-semibold px-2.5 py-0.5 rounded">{product.category}</span>
+                              </div>
+                              <div className="flex justify-between items-center">
+                                <span className="text-2xl font-bold text-gray-100">${product.price}</span>
+                                  <a href="#" className="text-white bg-indigo-800 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                                      See Detail
+                                  </a>
+                              </div>
+                            </div>
+                          </div>
+                        )
+                    })
+                }
             </div>
         </>
     )
 }
 
 export default Home;
-

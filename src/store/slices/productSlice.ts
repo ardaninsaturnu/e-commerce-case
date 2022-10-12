@@ -14,7 +14,14 @@ const initialState : ProductState = {
 };
 
 export const fetchAllProduct = createAsyncThunk( 'fetchAllProduct', async () => {
-    const response = await axios.get<RootObject>('https://upayments-studycase-api.herokuapp.com/api/products')
+    let token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1laG1ldGFyZGEuY2VsaWtAaG90bWFpbC5jb20iLCJnaXRodWIiOiJodHRwczovL2dpdGh1Yi5jb20vYXJkYW5pbnNhdHVybnUiLCJpYXQiOjE2NjU1MDUxMDYsImV4cCI6MTY2NTkzNzEwNn0.zeXT9Qopzz1cKktarRrRWE4n_-UtXuI5Cdvr98Rl-Pg'
+
+    const response = await axios.get<RootObject>(
+        'https://upayments-studycase-api.herokuapp.com/api/products',
+        {
+            headers: { Authorization: `Bearer ${token}` }
+        }
+    )
     return response.data
 })
 
