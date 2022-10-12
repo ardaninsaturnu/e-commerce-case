@@ -13,11 +13,11 @@ const Home = () => {
 
     return (
         <>
-            <div className="w-full lg:columns-4 sm:columns-3 gap-0.5">
+            <div className="w-full lg:columns-4 sm:columns-3 gap-0.5 pt-5">
                 {
                     products?.map(product => {
                         return (
-                          <div className="w-[95%] my-4 max-w-sm rounded-lg shadow-md bg-purple-900 mx-auto break-inside-avoid">
+                          <div className="w-[95%] mb-5 max-w-sm rounded-lg shadow-md bg-purple-900 mx-auto break-inside-avoid">
                             <div className="flex justify-center p-5">
                                 <img className="max-h-auto w-full" src={product.avatar} alt=""/>
                             </div>
@@ -28,11 +28,11 @@ const Home = () => {
                                 </h5>
                               </a>
                               <div className="flex items-center mt-2.5 mb-5">
-                                <span className="bg-indigo-800 text-indigo-300 text-xs font-semibold px-2.5 py-0.5 rounded">{product.category}</span>
+                                <span className="bg-orange-300 text-orange-800 text-xs font-semibold px-2.5 py-0.5 rounded">{product.category}</span>
                               </div>
                               <div className="flex justify-between items-center">
                                 <span className="text-2xl font-bold text-gray-100">${product.price}</span>
-                                  <a href="#" className="text-white bg-indigo-800 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                                  <a href="#" className="text-white bg-orange-400 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
                                       See Detail
                                   </a>
                               </div>
