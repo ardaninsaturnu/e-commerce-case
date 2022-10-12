@@ -49,9 +49,9 @@ npm start
 ## View 
 to view project last version click this url : [mehmetardacelik-reactjs.vercel.app](https://mehmetardacelik-reactjs.vercel.app)
 
-# Commits Explanation
+### Commits Explanation
 
-- :rainbow: for style
-- :microbe: for bug fixies
-- :dna: for merging
-- :fairy: for new features
+- :rainbow:  for style
+- :microbe:  for bug fixies
+- :dna:  for merging
+- :fairy:  for new features
