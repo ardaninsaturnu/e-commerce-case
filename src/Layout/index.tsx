@@ -1,12 +1,15 @@
-import React from "react";
-import Home from '../Pages/Home'
+import React, { ReactNode } from "react";
 import Header from "./Header";
 
-const Layout = () => {
+interface LayoutProps {
+    children: ReactNode;
+}
+
+const Layout = ({ children } : LayoutProps ) => {
     return(
         <>
             <Header/>
-            <Home/>
+            {children}
         </>
     )
 }

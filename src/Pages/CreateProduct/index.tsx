@@ -1,8 +1,9 @@
 import React from "react";
+import Layout from "../../Layout";
 
 const CreateProduct = () => {
     return(
-        <>CreateProduct</>
+        <Layout>arda</Layout>
     )
 }
 
