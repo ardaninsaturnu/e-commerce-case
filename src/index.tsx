@@ -6,29 +6,27 @@ import ErrorPage from "./Pages/ErrorPage";
 import { Provider } from 'react-redux';
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import { store } from './store';
-import './index.css';
-import CreateProduct from "./Pages/CreateProduct";
 import Favorite from "./Pages/Favorite";
+import ProductDetail from "./Pages/ProductDetail";
+import './index.css';
 
 const router = createBrowserRouter([
     {
+        path: "/",
         element: <Root/>,
         errorElement: <ErrorPage />,
         children: [
             {
-                path: "/",
+                index: true,
                 element: <Home/>,
-                errorElement: <ErrorPage />,
             },
             {
                 path: "/favorite",
                 element: <Favorite/>,
-                errorElement: <ErrorPage />,
             },
             {
-                path: "/create-product/:id",
-                element: <CreateProduct/>,
-                errorElement: <ErrorPage />,
+                path: "/product-detail/:id",
+                element: <ProductDetail/>,
             }
         ]
     }
