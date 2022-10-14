@@ -4,9 +4,9 @@ import {Outlet} from "react-router-dom";
 
 function Root() {
   return (
-   <Layout>
-       <Outlet />
-   </Layout>
+    <Layout>
+      <Outlet/>
+    </Layout>
   );
 }
 
