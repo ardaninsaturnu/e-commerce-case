@@ -20,7 +20,7 @@ const ProductDetail = () => {
   return (
     <>
       <div className="max-w-7xl mx-auto p-5">
-        <div className="flex gap-8">
+        <div className="flex gap-8 min-h-[400px]">
           <div className="w-1/3">
             <img className="w-full" src={product?.product?.avatar} alt="ecommerce project"/>
           </div>

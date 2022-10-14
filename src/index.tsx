@@ -9,6 +9,7 @@ import {store} from './store';
 import Favorite from "./Pages/Favorite";
 import ProductDetail from "./Pages/ProductDetail";
 import './index.css';
+import CreateProduct from "./Pages/CreateProduct";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: "/favorite",
         element: <Favorite/>,
+      },
+      {
+        path: "/create-product",
+        element: <CreateProduct/>,
       },
       {
         path: "/product-detail/:id",

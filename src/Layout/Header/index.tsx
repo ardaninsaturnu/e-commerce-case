@@ -1,10 +1,11 @@
 import React from "react";
+import {NavLink} from "react-router-dom";
 
 const Header = () => {
   return (
     <div className="bg-purple-900 h-20 flex items-center px-12 justify-between">
       <h1 className="font-medium text-orange-400 text-xl">Mehmet Arda Çelik | UPayments Case Study</h1>
-      <button className="shadow-2xl bg-orange-400 text-white p-3 rounded-xl">Add Product</button>
+      <NavLink to="/create-product" className="shadow-2xl bg-orange-400 bg-orange-400 text-white p-2 rounded">Add Product</NavLink>
     </div>
   )
 }
