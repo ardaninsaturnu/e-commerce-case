@@ -1,15 +1,16 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from "react-dom/client";
+import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import {Provider} from 'react-redux';
+import {store} from './store';
 import Root from './root';
 import Home from './Pages/Home';
-import ErrorPage from "./Pages/ErrorPage";
-import {Provider} from 'react-redux';
-import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import {store} from './store';
 import Favorite from "./Pages/Favorite";
 import ProductDetail from "./Pages/ProductDetail";
-import './index.css';
 import CreateProduct from "./Pages/CreateProduct";
+import ErrorPage from "./Pages/ErrorPage";
+import './index.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 const router = createBrowserRouter([
   {
@@ -37,9 +38,9 @@ const router = createBrowserRouter([
   }
 ]);
 
-ReactDOM.render(
+const root = ReactDOM.createRoot( document.getElementById("root") as Element );
+root.render(
   <Provider store={store}>
     <RouterProvider router={router}/>
-  </Provider>,
-  document.getElementById('root')
-)
+  </Provider>
+);

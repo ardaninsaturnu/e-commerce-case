@@ -11,17 +11,16 @@ const ProductDetail = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    dispatch(fetchProduct(productId));
+    dispatch(fetchProduct( productId ));
   }, []);
 
   useEffect(() => {
-    setProduct(productState.data);
-  }, [productState])
+    setProduct( productState );
+    console.log( productState );
+  }, [ productState ])
 
   return (
     <>
-      <div>
-      </div>
       <div className="max-w-7xl mx-auto p-5">
         <button
           type="button"

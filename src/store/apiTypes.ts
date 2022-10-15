@@ -10,6 +10,12 @@ export interface ProductObject {
   product: ProductType;
 }
 
+// export create product
+export interface CreateObject {
+  message: string;
+  statusCode: number;
+}
+
 export interface ProductType {
   _id: string;
   name: string;
@@ -22,3 +28,4 @@ export interface ProductType {
   updatedAt: Date;
   __v: number;
 }
+

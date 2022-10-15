@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import axios from "axios";
-import {AllObject, ProductObject} from "../apiTypes";
+import { AllObject, ProductObject, CreateObject } from "../apiTypes";
 
 interface ProductState {
   list: {
@@ -12,6 +12,11 @@ interface ProductState {
     data: ProductObject | null,
     loading: boolean,
     error: string
+  },
+  create: {
+    data: CreateObject | null,
+    loading: boolean,
+    error: string,
   }
 }
 
@@ -22,6 +27,11 @@ const initialState: ProductState = {
     error: '',
   },
   detail: {
+    data: null,
+    loading: false,
+    error: '',
+  },
+  create: {
     data: null,
     loading: false,
     error: '',
@@ -52,12 +62,26 @@ export const fetchProduct = createAsyncThunk('fetchProduct', async (id: string |
   return response.data
 })
 
+export const createProduct = createAsyncThunk('createProduct', async ( formData: object | undefined ) => {
+  let token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1laG1ldGFyZGEuY2VsaWtAaG90bWFpbC5jb20iLCJnaXRodWIiOiJodHRwczovL2dpdGh1Yi5jb20vYXJkYW5pbnNhdHVybnUiLCJpYXQiOjE2NjU1MDUxMDYsImV4cCI6MTY2NTkzNzEwNn0.zeXT9Qopzz1cKktarRrRWE4n_-UtXuI5Cdvr98Rl-Pg'
+
+  const response = await axios.post<CreateObject>(
+    `https://upayments-studycase-api.herokuapp.com/api/products`,
+    formData,
+    {headers: {Authorization: `Bearer ${token}`}
+    })
+
+  const {data} = response
+
+    return data;
+})
+
 const productSlice = createSlice({
   name: 'product',
   initialState,
   reducers: {},
   extraReducers: {
-    [fetchAllProduct.pending.toString()]: (state) => {
+    [fetchAllProduct.pending.toString()]: state => {
       state.list.loading = true;
       state.list.error = "";
     },
@@ -65,12 +89,11 @@ const productSlice = createSlice({
       state.list.loading = false;
       state.list.data = action.payload;
     },
-    [fetchAllProduct.rejected.toString()]: (state) => {
+    [fetchAllProduct.rejected.toString()]: state => {
       state.list.loading = false;
       state.list.error = "Something went wrong";
     },
-
-    [fetchProduct.pending.toString()]: (state) => {
+    [fetchProduct.pending.toString()]: state => {
       state.detail.loading = true;
       state.detail.error = "";
     },
@@ -78,9 +101,21 @@ const productSlice = createSlice({
       state.detail.loading = false;
       state.detail.data = action.payload;
     },
-    [fetchProduct.rejected.toString()]: (state) => {
+    [fetchProduct.rejected.toString()]: state => {
       state.detail.loading = false;
       state.detail.error = "Something went wrong!";
+    },
+    [fetchProduct.pending.toString()]: state => {
+      state.create.loading = true;
+      state.create.error = "";
+    },
+    [fetchProduct.fulfilled.toString()]: (state, action: PayloadAction<CreateObject>) => {
+      state.create.loading = false;
+      state.create.data = action.payload;
+    },
+    [fetchProduct.rejected.toString()]: state => {
+      state.create.loading = false;
+      state.create.error = "Something went wrong!";
     }
   }
 })

@@ -16,9 +16,9 @@ const Home = () => {
     <>
       <div className="w-full lg:columns-4 sm:columns-3 gap-0.5 pt-5">
         {
-          products?.map(product => {
+          products?.map(( product, index ) => {
             return (
-              <div className="w-[95%] mb-5 max-w-sm rounded-lg shadow-md mx-auto break-inside-avoid">
+              <div className="w-[95%] mb-5 max-w-sm rounded-lg shadow-md mx-auto break-inside-avoid" key={index}>
                 <div className="flex justify-center p-5">
                   <img className="max-h-auto w-full" src={product.avatar} alt=""/>
                 </div>

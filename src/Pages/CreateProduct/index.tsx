@@ -1,9 +1,11 @@
-import UInput from "../../Component/uInput";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
-import React from "react";
+import React, { useState } from "react";
+import { useAppDispatch } from "../../store";
+import { createProduct } from "../../store/slices/productSlice";
+import { toast, ToastContainer } from "react-toastify";
 
-interface IFormInput {
+interface FormInput {
   Name: string;
   Price: number;
   Category: string;
@@ -14,15 +16,55 @@ interface IFormInput {
 
 const CreateProduct = () => {
   const navigate = useNavigate();
-  const { register, handleSubmit, formState:{ errors }} = useForm<IFormInput>();
-  const addProduct : SubmitHandler<IFormInput> = data => {
+  const dispatch = useAppDispatch();
+  const [ loading, setLoading ] = useState<boolean>( false )
+  const { register, handleSubmit, formState:{ errors }} = useForm<FormInput>();
 
+  const addProduct : SubmitHandler<FormInput> = data => {
+    setLoading( true );
+    const newData = {
+      ...data,
+      Avatar: data.Avatar[0]
+    }
+
+    try {
+      dispatch(createProduct( newData ))
+        .then( res => {
+          const { statusCode, message } : any = res.payload;
+
+          if (statusCode !== 200 ){
+            toast.error(message);
+            setLoading(false);
+            return;
+          }
+
+          toast.success( 'Ürün başarı ile kaydedildi.' );
+          setLoading(false);
+          navigate('/');
+
+        })
+    } catch {
+      setLoading(false);
+    }
   }
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="max-w-2xl mx-auto my-5">
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      <h2 className="text-orange-500 font-bold text-3xl my-3">Create product</h2>
+      <hr className="border border-orange-200 rounded mb-5"/>
       <form onSubmit={handleSubmit(addProduct)}>
-
         <div className="flex flex-col mb-1">
           <label className="text-orange-300 mb-1" htmlFor="Name">Product name:</label>
           <input
@@ -44,9 +86,16 @@ const CreateProduct = () => {
         <div className="flex flex-col mb-1">
           <label className="text-orange-300 mb-1" htmlFor="Price">Product price:</label>
           <input
-            { ...register( 'Price',{ required: 'This place cant be empty' } ) }
+            { ...register( 'Price',{
+              valueAsNumber: true,
+              required: 'This place cant be empty',
+              pattern: {
+                value: /^[0-9]+$/,
+                message: 'Please enter a number'
+              }}
+            )}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            type="text"
+            type="number"
             placeholder="product name"
           />
           { errors.Price && (
@@ -100,7 +149,7 @@ const CreateProduct = () => {
           <input
             { ...register( 'Avatar',{ required: 'This place cant be empty' } ) }
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            type="text"
+            type="file"
             placeholder="product description"
           />
           { errors.Avatar && (
@@ -118,7 +167,7 @@ const CreateProduct = () => {
           <input
             { ...register( 'DeveloperEmail', { required: 'This place cant be empty' } ) }
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            type="text"
+            type="email"
             placeholder="email"
           />
           { errors.DeveloperEmail && (
@@ -133,8 +182,15 @@ const CreateProduct = () => {
 
         <div className="flex justify-between mt-3">
           <button
-            className="bg-orange-400 text-white p-2 rounded w-[150px]"
+            disabled={ loading }
+            className="bg-orange-400 text-white p-2 rounded w-[150px] flex items-center justify-evenly"
             type="submit">
+            { loading && (
+              <div className="flex justify-center items-center">
+                <div className="spinner-border border-amber-300 animate-spin inline-block w-4 h-4 border-2 rounded-full" role="status">
+                </div>
+              </div>
+            )}
             Add Product
           </button>
           <button
