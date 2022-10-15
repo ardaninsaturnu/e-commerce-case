@@ -59,7 +59,7 @@ export const fetchProduct = createAsyncThunk('fetchProduct', async (id: string |
       headers: {Authorization: `Bearer ${token}`}
     }
   )
-  return response.data
+  return response.data;
 })
 
 export const createProduct = createAsyncThunk('createProduct', async ( formData: object | undefined ) => {
@@ -81,7 +81,7 @@ const productSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
-    [fetchAllProduct.pending.toString()]: state => {
+    [fetchAllProduct.pending.toString()]: (state) => {
       state.list.loading = true;
       state.list.error = "";
     },
@@ -89,11 +89,11 @@ const productSlice = createSlice({
       state.list.loading = false;
       state.list.data = action.payload;
     },
-    [fetchAllProduct.rejected.toString()]: state => {
+    [fetchAllProduct.rejected.toString()]: (state) => {
       state.list.loading = false;
       state.list.error = "Something went wrong";
     },
-    [fetchProduct.pending.toString()]: state => {
+    [fetchProduct.pending.toString()]: (state) => {
       state.detail.loading = true;
       state.detail.error = "";
     },
@@ -101,19 +101,19 @@ const productSlice = createSlice({
       state.detail.loading = false;
       state.detail.data = action.payload;
     },
-    [fetchProduct.rejected.toString()]: state => {
+    [fetchProduct.rejected.toString()]: (state) => {
       state.detail.loading = false;
       state.detail.error = "Something went wrong!";
     },
-    [fetchProduct.pending.toString()]: state => {
+    [createProduct.pending.toString()]: (state) => {
       state.create.loading = true;
       state.create.error = "";
     },
-    [fetchProduct.fulfilled.toString()]: (state, action: PayloadAction<CreateObject>) => {
+    [createProduct.fulfilled.toString()]: (state, action: PayloadAction<CreateObject>) => {
       state.create.loading = false;
       state.create.data = action.payload;
     },
-    [fetchProduct.rejected.toString()]: state => {
+    [createProduct.rejected.toString()]: (state) => {
       state.create.loading = false;
       state.create.error = "Something went wrong!";
     }
