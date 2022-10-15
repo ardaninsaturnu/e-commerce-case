@@ -18,13 +18,13 @@ const Home = () => {
         {
           products?.map(product => {
             return (
-              <div className="w-[95%] mb-5 max-w-sm rounded-lg shadow-md bg-purple-900 mx-auto break-inside-avoid">
+              <div className="w-[95%] mb-5 max-w-sm rounded-lg shadow-md mx-auto break-inside-avoid">
                 <div className="flex justify-center p-5">
                   <img className="max-h-auto w-full" src={product.avatar} alt=""/>
                 </div>
                 <div className="px-5 pb-5">
                   <a>
-                    <h5 className="text-lg font-semibold tracking-tight text-gray-300">
+                    <h5 className="text-lg font-semibold tracking-tight text-orange-900">
                       {product.name}
                     </h5>
                   </a>
@@ -33,7 +33,7 @@ const Home = () => {
                       className="bg-orange-300 text-orange-800 text-xs font-semibold px-2.5 py-0.5 rounded">{product.category}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-2xl font-bold text-gray-100">${product.price}</span>
+                    <span className="text-2xl font-bold text-orange-900"><span className="text-orange-400">$</span>{product.price}</span>
                     <NavLink
                       to={`/product-detail/${product._id}`}
                       state={{
