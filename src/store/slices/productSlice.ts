@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import axios from "axios";
-import { AllObject, ProductObject, CreateObject } from "../apiTypes";
+import {AllObject, ProductObject, CreateObject, CategoryObject} from "../apiTypes";
 
 interface ProductState {
   list: {
@@ -15,6 +15,11 @@ interface ProductState {
   },
   create: {
     data: CreateObject | null,
+    loading: boolean,
+    error: string,
+  },
+  categories: {
+    data: CategoryObject | null,
     loading: boolean,
     error: string,
   }
@@ -32,6 +37,11 @@ const initialState: ProductState = {
     error: '',
   },
   create: {
+    data: null,
+    loading: false,
+    error: '',
+  },
+  categories: {
     data: null,
     loading: false,
     error: '',
@@ -60,6 +70,18 @@ export const fetchProduct = createAsyncThunk('fetchProduct', async (id: string |
     }
   )
   return response.data;
+})
+
+export const fetchAllCategory = createAsyncThunk('fetchAllCategory', async () => {
+  let token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1laG1ldGFyZGEuY2VsaWtAaG90bWFpbC5jb20iLCJnaXRodWIiOiJodHRwczovL2dpdGh1Yi5jb20vYXJkYW5pbnNhdHVybnUiLCJpYXQiOjE2NjU1MDUxMDYsImV4cCI6MTY2NTkzNzEwNn0.zeXT9Qopzz1cKktarRrRWE4n_-UtXuI5Cdvr98Rl-Pg'
+
+  const response = await axios.get<AllObject>(
+    'https://upayments-studycase-api.herokuapp.com/api/categories/',
+    {
+      headers: {Authorization: `Bearer ${token}`}
+    }
+  )
+  return response.data
 })
 
 export const createProduct = createAsyncThunk('createProduct', async ( formData: object | undefined ) => {
@@ -116,7 +138,19 @@ const productSlice = createSlice({
     [createProduct.rejected.toString()]: (state) => {
       state.create.loading = false;
       state.create.error = "Something went wrong!";
-    }
+    },
+    [fetchAllCategory.pending.toString()]: (state) => {
+      state.categories.loading = true;
+      state.categories.error = "";
+    },
+    [fetchAllCategory.fulfilled.toString()]: (state, action: PayloadAction<CategoryObject>) => {
+      state.categories.loading = false;
+      state.categories.data = action.payload;
+    },
+    [fetchAllCategory.rejected.toString()]: (state) => {
+      state.categories.loading = false;
+      state.categories.error = "Something went wrong";
+    },
   }
 })
 

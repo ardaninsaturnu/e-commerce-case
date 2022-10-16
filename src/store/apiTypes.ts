@@ -4,6 +4,12 @@ export interface AllObject {
   products: ProductType[];
 }
 
+// export category list
+export interface CategoryObject {
+  message: string;
+  categories: Category[];
+}
+
 // export fetch product api types
 export interface ProductObject {
   message: string;
@@ -24,6 +30,14 @@ export interface ProductType {
   price: number;
   category: string;
   developerEmail: string;
+  createdAt: Date;
+  updatedAt: Date;
+  __v: number;
+}
+
+export interface Category {
+  _id: string;
+  name: string;
   createdAt: Date;
   updatedAt: Date;
   __v: number;

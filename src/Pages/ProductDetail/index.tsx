@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import {fetchProduct} from "../../store/slices/productSlice";
 import {useAppDispatch, useAppSelector} from "../../store";
-import Loading from "../../Component/LoadingSpinner";
+import Loading from "../../Component/Loading";
 
 const ProductDetail = () => {
   const dispatch = useAppDispatch();

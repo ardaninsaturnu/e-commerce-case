@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "../../store";
 import {fetchAllProduct} from "../../store/slices/productSlice";
 import {NavLink} from "react-router-dom";
-import Loading from "../../Component/LoadingSpinner";
+import Loading from "../../Component/Loading";
 
 const Home = () => {
   const dispatch = useAppDispatch();
@@ -15,7 +15,6 @@ const Home = () => {
       dispatch(fetchAllProduct())
   }, []);
 
-  console.log(leb)
   return (
     <>
       <div className="w-full lg:columns-4 sm:columns-3 gap-0.5 pt-5">
