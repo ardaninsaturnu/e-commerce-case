@@ -2,18 +2,20 @@ import { Fragment, useState, useEffect } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import {useAppDispatch, useAppSelector} from "../store";
-import { fetchAllCategory } from "../store/slices/productSlice";
+import {fetchAllCategory, selectCategory} from "../store/slices/productSlice";
+import {useNavigate} from "react-router-dom";
 
 export default function CategoryFilter() {
-  const [selected, setSelected] = useState({name:'all'})
+  const [selected, setSelected] = useState({ name:'all',_id:0 } )
   const dispatch = useAppDispatch();
   const categoryState = useAppSelector(state => state.products.categories );
   const categories = categoryState?.data?.categories;
-  console.log( categories )
 
   useEffect(() => {
     dispatch(fetchAllCategory())
   }, []);
+
+  const selectFilter = () => dispatch(selectCategory( selected ))
 
   return (
     <div className="w-60">
@@ -37,6 +39,7 @@ export default function CategoryFilter() {
             <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
               { categories?.map((category, categoryIdx) => (
                 <Listbox.Option
+                  onClick={ selectFilter }
                   key={categoryIdx}
                   className={({ active }) =>
                     `relative cursor-default select-none py-2 pl-10 pr-4 ${
@@ -70,42 +73,3 @@ export default function CategoryFilter() {
     </div>
   )
 }
-
-
-
-
-
-
-
-
-/*import {useEffect} from "react";
-import {useAppDispatch, useAppSelector} from "../store";
-import {fetchAllProduct} from "../store/slices/productSlice";
-import Loading from "./Loading";
-
-const CategoryFilter = () => {
-  const dispatch = useAppDispatch();
-  const categoryState = useAppSelector(state => state.products.categories );
-  const categories = categoryState?.data?.categories;
-  const loading = categoryState?.loading;
-
-  useEffect(() => {
-    dispatch(fetchAllProduct())
-  }, []);
-
-  return(
-    <>
-      { categories?.map( category => {
-        return (
-          loading ? (
-            <Loading/>
-          ) : (
-            <div>{category.name}</div>
-          )
-        )
-      })}
-    </>
-  )
-}
-
-export default CategoryFilter;*/

@@ -10,6 +10,12 @@ export interface CategoryObject {
   categories: Category[];
 }
 
+// select only category
+export interface CategoryFilterObject {
+  message: string;
+  category: Category;
+}
+
 // export fetch product api types
 export interface ProductObject {
   message: string;
@@ -42,4 +48,13 @@ export interface Category {
   updatedAt: Date;
   __v: number;
 }
+
+export interface Category {
+  _id: string;
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
+  __v: number;
+}
+
 

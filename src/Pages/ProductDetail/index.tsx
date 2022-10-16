@@ -10,7 +10,7 @@ const ProductDetail = () => {
   const loading = useAppSelector(state => state.products.detail.loading );
   const {id: productId} = useParams<string>()
   const [product, setProduct] = useState<any>(null);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchProduct(productId));

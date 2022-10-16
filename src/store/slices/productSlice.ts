@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import axios from "axios";
-import {AllObject, ProductObject, CreateObject, CategoryObject} from "../apiTypes";
+import {AllObject, ProductObject, CreateObject, CategoryObject, CategoryFilterObject} from "../apiTypes";
 
 interface ProductState {
   list: {
@@ -22,6 +22,10 @@ interface ProductState {
     data: CategoryObject | null,
     loading: boolean,
     error: string,
+  },
+  selectCategory: {
+    name: string,
+    _id : string
   }
 }
 
@@ -45,10 +49,14 @@ const initialState: ProductState = {
     data: null,
     loading: false,
     error: '',
+  },
+  selectCategory: {
+    name:'',
+    _id: ''
   }
 };
 
-export const fetchAllProduct = createAsyncThunk('fetchAllProduct', async () => {
+export const fetchAllProduct = createAsyncThunk('fetchAllProduct', async ( category? : string ) => {
   let token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1laG1ldGFyZGEuY2VsaWtAaG90bWFpbC5jb20iLCJnaXRodWIiOiJodHRwczovL2dpdGh1Yi5jb20vYXJkYW5pbnNhdHVybnUiLCJpYXQiOjE2NjU1MDUxMDYsImV4cCI6MTY2NTkzNzEwNn0.zeXT9Qopzz1cKktarRrRWE4n_-UtXuI5Cdvr98Rl-Pg'
 
   const response = await axios.get<AllObject>(
@@ -57,7 +65,15 @@ export const fetchAllProduct = createAsyncThunk('fetchAllProduct', async () => {
       headers: {Authorization: `Bearer ${token}`}
     }
   )
-  return response.data
+
+  if( category ) {
+    let filteredResponse = response.data.products.filter( product => product.category === category )
+    response.data.products = filteredResponse;
+
+    return response.data;
+  }
+
+  return response.data;
 })
 
 export const fetchProduct = createAsyncThunk('fetchProduct', async (id: string | undefined) => {
@@ -84,6 +100,20 @@ export const fetchAllCategory = createAsyncThunk('fetchAllCategory', async () =>
   return response.data
 })
 
+export const fetchCategory = createAsyncThunk('fetchCategory', async (id: string | undefined) => {
+  let token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1laG1ldGFyZGEuY2VsaWtAaG90bWFpbC5jb20iLCJnaXRodWIiOiJodHRwczovL2dpdGh1Yi5jb20vYXJkYW5pbnNhdHVybnUiLCJpYXQiOjE2NjU1MDUxMDYsImV4cCI6MTY2NTkzNzEwNn0.zeXT9Qopzz1cKktarRrRWE4n_-UtXuI5Cdvr98Rl-Pg'
+
+  const response = await axios.get<CategoryFilterObject>(
+    `https://upayments-studycase-api.herokuapp.com/api/categories/${id}`,
+    {
+      headers: {Authorization: `Bearer ${token}`}
+    }
+  )
+
+  console.log( response.data )
+  return response.data;
+})
+
 export const createProduct = createAsyncThunk('createProduct', async ( formData: object | undefined ) => {
   let token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1laG1ldGFyZGEuY2VsaWtAaG90bWFpbC5jb20iLCJnaXRodWIiOiJodHRwczovL2dpdGh1Yi5jb20vYXJkYW5pbnNhdHVybnUiLCJpYXQiOjE2NjU1MDUxMDYsImV4cCI6MTY2NTkzNzEwNn0.zeXT9Qopzz1cKktarRrRWE4n_-UtXuI5Cdvr98Rl-Pg'
 
@@ -94,14 +124,17 @@ export const createProduct = createAsyncThunk('createProduct', async ( formData:
     })
 
   const {data} = response
-
-    return data;
+  return data;
 })
 
 const productSlice = createSlice({
   name: 'product',
   initialState,
-  reducers: {},
+  reducers: {
+    selectCategory: (state, action) => {
+      state.selectCategory = action.payload;
+    }
+  },
   extraReducers: {
     [fetchAllProduct.pending.toString()]: (state) => {
       state.list.loading = true;
@@ -150,8 +183,9 @@ const productSlice = createSlice({
     [fetchAllCategory.rejected.toString()]: (state) => {
       state.categories.loading = false;
       state.categories.error = "Something went wrong";
-    },
+    }
   }
 })
 
+export const { selectCategory } = productSlice.actions;
 export default productSlice.reducer;

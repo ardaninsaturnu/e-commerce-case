@@ -7,13 +7,21 @@ import Loading from "../../Component/Loading";
 const Home = () => {
   const dispatch = useAppDispatch();
   const productState = useAppSelector(state => state.products.list );
-  const leb = useAppSelector(state => state );
+  const selectCategory = useAppSelector(state => state.products.selectCategory );
   const products = productState?.data?.products;
   const loading = productState?.loading;
 
-  useEffect(() => {
-      dispatch(fetchAllProduct())
-  }, []);
+  useEffect( () => {
+    const { name } = selectCategory
+
+    if( name !== '' ){
+      dispatch(fetchAllProduct(name))
+      return
+    }
+
+    dispatch(fetchAllProduct())
+
+  }, [ selectCategory, useAppSelector, dispatch  ] )
 
   return (
     <>
