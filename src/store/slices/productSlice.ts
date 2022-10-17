@@ -66,7 +66,7 @@ export const fetchAllProduct = createAsyncThunk('fetchAllProduct', async ( categ
     }
   )
 
-  if( category ) {
+  if( category && category !== 'all' ) {
     let filteredResponse = response.data.products.filter( product => product.category === category )
     response.data.products = filteredResponse;
 
