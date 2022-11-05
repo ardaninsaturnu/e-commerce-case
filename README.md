@@ -1,3 +1,5 @@
+Warning : This api expired. That's why project can't reach products.
+
 ##### Mehmet Arda Çelik
 
 ## Case for UPayments
